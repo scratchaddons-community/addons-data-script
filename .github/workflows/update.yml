@@ -27,6 +27,7 @@ jobs:
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
             - run: cd ScratchAddons
+            - run: ls -a
             # Checkout
             - run: VERSION="${{ inputs.Version || env.LATEST }}"
               env:
