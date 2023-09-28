@@ -1,6 +1,10 @@
 name: Update addons data
 on:
     workflow_dispatch:
+        inputs:
+            version:
+                required: false
+                type: string
     schedule:
         - cron: 30 11/12 * * *
 
