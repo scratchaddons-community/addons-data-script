@@ -24,7 +24,7 @@ jobs:
                   sparse-checkout: |
                       addons/*/addon.json
                       addons/addons.json
-                  sparse-checkout-cone-mode: true
+                  sparse-checkout-cone-mode: false
                   fetch-tags: true
             # Checkout
             - run: VERSION = ${{ inputs.Version }} || "$(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' ')"
