@@ -24,9 +24,10 @@ jobs:
                   sparse-checkout: |
                       addons/*/addon.json
                       addons/addons.json
+                  sparse-checkout-cone-mode: true
                   fetch-tags: true
             # Checkout
-            - run: VERSION = `git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' '`
+            - run: VERSION = ${{ inputs.Version }} || "$(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' ')"
             - run: git checkout $VERSION
             # Get package
             - run: cd ../dist
