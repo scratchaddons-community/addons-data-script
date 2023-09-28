@@ -1,0 +1,18 @@
+{
+	"name": "@sa-community/addons-data",
+	"version": "__MSG_VERSION__",
+	"description": "Scratch Addons' addons data",
+	"homepage": "https://github.com/scratchaddons-community",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/scratchaddons-community/addons-data-script"
+	},
+	"license": "GPLv3",
+	"maintainers": [
+		{
+			"name": "RedGuy12",
+			"url": "https://github.com/RedGuy12"
+		}
+	],
+	"main": "addons.json"
+}
