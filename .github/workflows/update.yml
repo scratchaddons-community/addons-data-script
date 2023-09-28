@@ -27,8 +27,10 @@ jobs:
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
             # Checkout
-            - run: VERSION = ${{ inputs.Version }} || "$(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' ')"
-            - run: git checkout $VERSION
+            - run: VERSION="${{ inputs.Version || env.LATEST }}"
+              env:
+                  LATEST: $(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' ')
+            - run: git checkout ${VERSION:-}
             # Get package
             - run: cd ../dist
             - run: cat ../package.json | sed "s/__MSG_VERSION__/$VERSION/g" > package.json
