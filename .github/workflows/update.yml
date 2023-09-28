@@ -17,14 +17,17 @@ jobs:
 
         steps:
             # Clone
-            - run: git clone https://github.com/ScratchAddons/ScratchAddons.git --depth=1 --sparse
-            - run: cd ScratchAddons
-            - run: git config --global --add safe.directory $(realpath .)
+            - uses: actions/checkout@v4.1.0
+              with:
+                  repository: ScratchAddons/ScratchAddons
+                  path: ScratchAddons
+                  sparse-checkout: |
+                      addons/*/addon.json
+                      addons/addons.json
+                  fetch-tags: true
             # Checkout
-            - run: git fetch --tags
             - run: VERSION = `git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' '`
             - run: git checkout $VERSION
-            - run: git sparse-checkout add "addons/*/addon.json" addons/addons.json
             # Get package
             - run: cd ../dist
             - run: cat ../package.json | sed "s/__MSG_VERSION__/$VERSION/g" > package.json
