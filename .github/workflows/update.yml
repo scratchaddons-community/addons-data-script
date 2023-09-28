@@ -2,7 +2,7 @@ name: Update addons data
 on:
     workflow_dispatch:
         inputs:
-            version:
+            Version:
                 required: false
                 type: string
     schedule:
@@ -19,6 +19,7 @@ jobs:
             # Clone
             - run: git clone https://github.com/ScratchAddons/ScratchAddons.git --depth=1 --sparse
             - run: cd ScratchAddons
+            - run: git config --global --add safe.directory $(realpath .)
             # Checkout
             - run: git fetch --tags
             - run: VERSION = `git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' '`
