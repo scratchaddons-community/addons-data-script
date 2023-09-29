@@ -41,11 +41,11 @@ jobs:
             - run: ls -a
             - run: ls .. -a
             - run: |
-                  for addon in "$(jq -r .[] addons/addons.json)"; do
+                  while IFS= read -r addon; do
                     [[ "$addon" == "//"* ]] && continue
-                    cat "addons/$addon/addon.json" >> dist/addons.json
+                    cat "addons/$(echo "$addon" | tr -d '\r')/addon.json" >> dist/addons.json
                     echo , >> dist/addons.json
-                  done
+                  done < <(jq -r ".[]" addons/addons.json)
             - run: echo ] >> dist/addons.json
             - run: cat dist/addons.json
             # Publish
