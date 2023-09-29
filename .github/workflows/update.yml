@@ -25,7 +25,6 @@ jobs:
                       addons/addons.json
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
-            - run: cd ScratchAddons
             - run: ls -a
             # Checkout
             - run: VERSION="${{ inputs.Version || env.LATEST }}"
@@ -34,7 +33,7 @@ jobs:
             - run: git checkout $VERSION
             # Get package
             - run: cd ../dist
-            - run: cat ../package.json | sed "s/__MSG_VERSION__/$VERSION/g" > package.json
+            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"$VERSION\",\"description\":Scratch Addons" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}' > package.json
             # Get addons
             - run: echo [ > addons.json
             - run: addons = `jq -r '.[]' ../ScratchAddons/addons/addons.json`
