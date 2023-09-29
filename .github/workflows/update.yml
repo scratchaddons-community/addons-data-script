@@ -21,8 +21,8 @@ jobs:
               with:
                   repository: ScratchAddons/ScratchAddons
                   sparse-checkout: |
-                      addons/*/addon.json
-                      addons/addons.json
+                      ./addons/*/addon.json
+                      ./addons/addons.json
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
             - run: ls -a
@@ -33,20 +33,21 @@ jobs:
             - run: git checkout $VERSION
             # Get package
             - run: mkdir dist
-            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"$VERSION\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > package.json
+            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"$VERSION\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > ./package.json
             # Get addons
             - run: echo [ > dist/addons.json
-            - run: addons = `jq -r '.[]' addons/addons.json`
+            - run: addons = $(jq -r '.[]' ./addons/addons.json)
             - run: |
                   for addon in "${addons[@]}"; do
-                    cat "addons/$addon/addon.json" >> dist/addons.json
-                    echo , >> dist/addons.json
+                    cat "./addons/$addon/addon.json" >> ./dist/addons.json
+                    echo , >> ./dist/addons.json
                   done
-            - run: echo ] >> dist/addons.json
+            - run: echo ] >> ./dist/addons.json
             # Publish
             - uses: actions/setup-node@v3
               with:
                   registry-url: "https://registry.npmjs.org"
             # - run: npm publish
+            #   working-directory: ./dist
             #   env:
             #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
