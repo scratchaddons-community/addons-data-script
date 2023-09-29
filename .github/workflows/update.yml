@@ -21,8 +21,8 @@ jobs:
               with:
                   repository: ScratchAddons/ScratchAddons
                   sparse-checkout: |
-                      ./addons/*/addon.json
-                      ./addons/addons.json
+                      addons/*/addon.json
+                      addons/addons.json
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
             - run: ls -a
