@@ -47,6 +47,7 @@ jobs:
                     echo , >> dist/addons.json
                   done
             - run: echo ] >> dist/addons.json
+            - run: cat dist/addons.json
             # Publish
             - uses: actions/setup-node@v3
               with:
