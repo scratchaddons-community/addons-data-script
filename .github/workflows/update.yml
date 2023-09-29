@@ -41,7 +41,7 @@ jobs:
             - run: ls -a
             - run: ls .. -a
             - run: |
-                  for addon in $(jq -r .[] addons/addons.json); do
+                  for addon in "$(jq -r .[] addons/addons.json)"; do
                     [[ "$addon" == "//"* ]] && continue
                     cat "addons/$addon/addon.json" >> dist/addons.json
                     echo , >> dist/addons.json
