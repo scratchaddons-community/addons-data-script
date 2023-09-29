@@ -34,8 +34,8 @@ jobs:
             # Get package
             - run: mkdir dist
             - run: ls -a
-            - run: ls addons -a
             - run: cd dist
+            - run: ls ../addons -a
             - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"$VERSION\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > package.json
             # Get addons
             - run: echo [ > addons.json
