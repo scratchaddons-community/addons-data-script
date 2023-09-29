@@ -37,10 +37,10 @@ jobs:
             - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"$VERSION\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > package.json
             # Get addons
             - run: echo [ > addons.json
-            - run: addons = `jq -r '.[]' ../ScratchAddons/addons/addons.json`
+            - run: addons = `jq -r '.[]' ../addons/addons.json`
             - run: |
                   for addon in "${addons[@]}"; do
-                    cat "../ScratchAddons/addons/$addon/addon.json" >> addons.json
+                    cat "../addons/$addon/addon.json" >> addons.json
                     echo , >> addons.json
                   done
             - run: echo ] >> addons.json
