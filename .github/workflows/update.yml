@@ -29,29 +29,29 @@ jobs:
             # Checkout
             - run: VERSION="${{ inputs.Version || env.LATEST }}"
               env:
-                  LATEST: $(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' ')
+                  LATEST: $(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d " ")
             - run: git checkout $VERSION
             # Get package
             - run: ls -a
             - run: ls .. -a
-            - run: mkdir ./dist
-            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"$VERSION\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > ./dist/package.json
+            - run: mkdir dist
+            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"$VERSION\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > dist/package.json
             # Get addons
-            - run: echo [ > ./dist/addons.json
+            - run: echo [ > dist/addons.json
             - run: ls -a
             - run: ls .. -a
-            - run: addons = $(jq -r '.[]' ./addons/addons.json)
+            - run: addons = $(jq -r ".[]" "addons/addons.json")
             - run: |
                   for addon in "${addons[@]}"; do
-                    cat "./addons/$addon/addon.json" >> ./dist/addons.json
-                    echo , >> ./dist/addons.json
+                    cat "addons/$addon/addon.json" >> dist/addons.json
+                    echo , >> dist/addons.json
                   done
-            - run: echo ] >> ./dist/addons.json
+            - run: echo ] >> dist/addons.json
             # Publish
             - uses: actions/setup-node@v3
               with:
                   registry-url: "https://registry.npmjs.org"
             # - run: npm publish
-            #   working-directory: ./dist
+            #   working-directory: dist
             #   env:
             #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
