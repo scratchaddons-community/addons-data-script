@@ -27,7 +27,7 @@ jobs:
                   fetch-tags: true
             - run: ls -a
             # Checkout
-            - run: VERSION="${{ inputs.Version || env.LATEST }}"
+            - run: echo "VERSION=${{ inputs.Version || env.LATEST }}" >> $GITHUB_ENV
               env:
                   LATEST: $(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d " ")
             - run: git checkout $VERSION
@@ -40,9 +40,8 @@ jobs:
             - run: echo [ > dist/addons.json
             - run: ls -a
             - run: ls .. -a
-            - run: addons=($(jq -r .[] addons/addons.json))
             - run: |
-                  for addon in "${addons[@]}"; do
+                  for addon in "$(jq -r .[] addons/addons.json); do
                     [[ "$addon" == "//"* ]] && continue
                     cat "addons/$addon/addon.json" >> dist/addons.json
                     echo , >> dist/addons.json
