@@ -37,6 +37,7 @@ jobs:
             # Get addons
             - run: |
                   jq -c 'map(select(startswith("//") | not) | {addon: ., content: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
+            - run: cat dist/addons.json
             # Publish
             - uses: actions/setup-node@v3
               with:
