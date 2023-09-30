@@ -28,12 +28,13 @@ jobs:
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
                   fetch-depth: 0
+                  ref: refs/tags/*
             # Checkout
             - run: VERSION=${{ inputs.Version || '$(git describe --tags $(git rev-list --tags --max-count=1))' }}
             - run: git checkout ${{ env.VERSION || '$VERSION' }}
             # Get package
             - run: mkdir dist
-            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"${{ env.VERSION }}\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > dist/package.json
+            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"${{ env.VERSION || '$VERSION' }}\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > dist/package.json
             # Get addons
             - run: |
                   jq -c 'map(select(startswith("//") | not) | {addon: ., content: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
