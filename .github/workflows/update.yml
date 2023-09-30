@@ -1,5 +1,7 @@
 name: Update addons data
 on:
+    push:
+        branches: main
     workflow_dispatch:
         inputs:
             Version:
@@ -28,7 +30,7 @@ jobs:
             # Checkout
             - run: echo "VERSION=${{ inputs.Version || env.LATEST }}" >> $GITHUB_ENV
               env:
-                  LATEST: $(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d " ")
+                  LATEST: $(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' ')
             - run: git checkout ${{ env.VERSION }}
             - run: echo ${{ env.VERSION }}
             # Get package
@@ -37,7 +39,6 @@ jobs:
             # Get addons
             - run: |
                   jq -c 'map(select(startswith("//") | not) | {addon: ., content: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
-            - run: cat dist/addons.json
             # Publish
             - uses: actions/setup-node@v3
               with:
