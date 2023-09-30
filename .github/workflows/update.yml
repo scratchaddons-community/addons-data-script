@@ -27,12 +27,10 @@ jobs:
                       addons/addons.json
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
+                  fetch-depth: 0
             # Checkout
-            - run: echo "VERSION=${{ inputs.Version || env.LATEST }}" >> $GITHUB_ENV
-              env:
-                  LATEST: $(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d ' ')
+            - run: echo "VERSION=${{ inputs.Version || '$(git describe)' }}" >> $GITHUB_ENV
             - run: git checkout ${{ env.VERSION }}
-            - run: echo ${{ env.VERSION }}
             # Get package
             - run: mkdir dist
             - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"${{ env.VERSION }}\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > dist/package.json
