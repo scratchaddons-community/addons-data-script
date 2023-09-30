@@ -29,11 +29,11 @@ jobs:
             - run: echo "VERSION=${{ inputs.Version || env.LATEST }}" >> $GITHUB_ENV
               env:
                   LATEST: $(git rev-list --tags --timestamp --no-walk | sort -nr | head -n1 | cut -f 2 -d " ")
-            - run: git checkout $VERSION
-            - run: echo $VERSION
+            - run: git checkout ${{ env.VERSION }}
+            - run: echo ${{ env.VERSION }}
             # Get package
             - run: mkdir dist
-            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"$VERSION\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > dist/package.json
+            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"${{ env.VERSION }}\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > dist/package.json
             # Get addons
             - run: |
                   jq -c 'map(select(startswith("//") | not) | {addon: ., content: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
