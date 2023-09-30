@@ -29,7 +29,7 @@ jobs:
                   fetch-tags: true
                   fetch-depth: 0
             # Checkout
-            - run: VERSION=${{ inputs.Version || '$(git describe)' }}
+            - run: VERSION=${{ inputs.Version || '$(git describe --tags)' }}
             - run: git checkout ${{ env.VERSION }}
             # Get package
             - run: mkdir dist
