@@ -33,6 +33,7 @@ jobs:
             - run: git checkout "$VERSION"
             # Setup directory
             - run: mkdir dist
+            - run: ls -af
             - run: cp LICENSE dist/LICENSE
             - run: cp manifest.json dist/manifest.json
             # Get package
