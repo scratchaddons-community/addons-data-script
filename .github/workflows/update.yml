@@ -25,6 +25,7 @@ jobs:
                   sparse-checkout: |
                       addons/*/addon.json
                       addons/addons.json
+                  sparse-checkout-cone-mode: false
                   fetch-tags: true
                   fetch-depth: 0
             # Checkout
