@@ -27,11 +27,6 @@ jobs:
                       addons/addons.json
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
-                  fetch-depth: 0
-            # Get the latest tag
-            - run: |
-                  TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-                  echo "Latest tag: $TAG"
             # Checkout
             - run: echo "VERSION=${{ inputs.Version || '$(git describe --tags $(git rev-list --tags --max-count=1))' }}" >> "$GITHUB_ENV"
             - run: git checkout "$VERSION"
