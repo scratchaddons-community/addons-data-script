@@ -30,7 +30,7 @@ jobs:
                   fetch-depth: 0
             # Checkout
             - run: VERSION=${{ inputs.Version || '$(git describe --tags $(git rev-list --tags --max-count=1))' }}
-            - run: git checkout ${{ env.VERSION }}
+            - run: git checkout ${{ env.VERSION || '$VERSION' }}
             # Get package
             - run: mkdir dist
             - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\"${{ env.VERSION }}\",\"description\":Scratch Addons\" addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > dist/package.json
