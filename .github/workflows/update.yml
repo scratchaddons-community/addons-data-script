@@ -39,7 +39,7 @@ jobs:
             - run: cp LICENSE dist/LICENSE
             - run: cp manifest.json dist/manifest.json
             # Get package
-            - run: echo "{\"name\":\"@sa-community/addons-data\",\"version\":\""$VERSION-test.0"\",\"description\":\"Scratch Addons' addons data\",\"homepage\":\"https://github.com/scratchaddons-community\",\"repository\":\"git+https://github.com/scratchaddons-community/addons-data-script\",\"license\":\"GPLv3\",\"maintainers\":[\"RedGuy12\"],\"main\":\"addons.json\"}" > dist/package.json
+            - run: echo '{"name":"@sa-community/addons-data","version":"' + $(echo $VERSION | sed "s/v//") + '-test.0","description":"Scratch Addons’ addons data","homepage":"https://github.com/scratchaddons-community","repository":{"type":"git","url":"https://github.com/scratchaddons-community/addons-data-script"},"license":"GPLv3","maintainers":["RedGuy12"],"main":"addons.json"}' > dist/package.json
             # Get addons
             - run: |
                   jq -c 'map(select(startswith("//") | not) | {addon: ., content: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
