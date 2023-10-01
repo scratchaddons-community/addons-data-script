@@ -1,3 +1,8 @@
+# are there better ways to do this? yeah probably
+# do i want to hear about it? NO
+# unless you're coding it
+# lmao
+
 name: Update addons data
 on:
     push:
@@ -33,20 +38,25 @@ jobs:
             # Checkout
             - run: echo "VERSION=${{ inputs.Version || '$(git describe --tags $(git rev-list --tags --max-count=1))' }}" >> "$GITHUB_ENV"
             - run: git checkout "$VERSION"
-            # Setup directory
-            - run: mkdir dist
-            - run: ls -af
-            - run: cp LICENSE dist/LICENSE
-            - run: cp manifest.json dist/manifest.json
-            # Get package
-            - run: echo '{"name":"@sa-community/addons-data","version":"'$(echo $VERSION | sed "s/v//")'-test.0","description":"Scratch Addons’ addons data","homepage":"https://github.com/scratchaddons-community","repository":"https://github.com/scratchaddons-community/addons-data-script","license":"GPLv3","maintainers":["RedGuy12"],"main":"addons.json"}' > dist/package.json
-            # Get addons
-            - run: |
-                  jq -c 'map(select(startswith("//") | not) | {addon: ., content: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
-            # Publish
+            # Check version
             - uses: actions/setup-node@v3
               with:
                   registry-url: "https://registry.npmjs.org"
+            - run: |
+                if [ $VERSION == "v$(npm view @sa-community/addons-data version)" ]; then
+                    echo "No new version"
+                    exit 1
+                fi
+            # Setup directory
+            - run: mkdir dist
+            - run: cp LICENSE dist/LICENSE
+            - run: cp manifest.json dist/manifest.json
+            # Get package
+            - run: echo '{"name":"@sa-community/addons-data","version":"'$(echo $VERSION | sed "s/v//")'","description":"Scratch Addons’ addons data","homepage":"https://github.com/scratchaddons-community","repository":"https://github.com/scratchaddons-community/addons-data-script","license":"GPLv3","maintainers":["RedGuy12"],"main":"addons.json"}' > dist/package.json
+            # Get addons
+            - run: |
+                  jq -c 'map(select(startswith("//") | not) | {addonId: ., manifest: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
+            # Publish
             - run: npm publish --provenance --access public
               working-directory: dist
               env:
