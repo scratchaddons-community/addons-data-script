@@ -46,7 +46,7 @@ jobs:
               with:
                   path: dist
             - run: cp LICENSE dist/LICENSE
-            - run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')-3/") > dist/package.json
+            - run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')/") > dist/package.json
             # Get addons
             - run: |
                   jq -c 'map(select(startswith("//") | not) | {addonId: ., manifest: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
