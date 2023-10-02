@@ -438,6 +438,6 @@ declare module "@sa-community/addons-data" {
 		};
 	};
 
-	type Addons = { addonId: string; manifest: AddonManifest }[];
+	const Addons: { addonId: string; manifest: AddonManifest }[];
 	export default Addons;
 }
