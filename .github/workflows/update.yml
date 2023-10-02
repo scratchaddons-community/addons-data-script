@@ -1,8 +1,3 @@
-# are there better ways to do this? yeah probably
-# do i want to hear about it? NO
-# unless you're coding it
-# lmao
-
 name: Update addons data
 on:
     push:
@@ -31,7 +26,6 @@ jobs:
                       addons/*/addon.json
                       addons/addons.json
                       LICENSE
-                      manifest.json
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
                   fetch-depth: 0
@@ -43,16 +37,17 @@ jobs:
               with:
                   registry-url: "https://registry.npmjs.org"
             - run: |
-                if [ $VERSION == "v$(npm view @sa-community/addons-data version)" ]; then
-                    echo "No new version"
-                    exit 1
-                fi
+                  if [ $VERSION == "v$(npm view @sa-community/addons-data version)" ]; then
+                      echo "No new version"
+                      exit 0
+                  fi
             # Setup directory
+            - uses: actions/checkout@v4.1.0
+              with:
+                  path: dist
             - run: mkdir dist
             - run: cp LICENSE dist/LICENSE
-            - run: cp manifest.json dist/manifest.json
-            # Get package
-            - run: echo '{"name":"@sa-community/addons-data","version":"'$(echo $VERSION | sed "s/v//")'","description":"Scratch Addons’ addons data","homepage":"https://github.com/scratchaddons-community","repository":"https://github.com/scratchaddons-community/addons-data-script","license":"GPLv3","maintainers":["RedGuy12"],"main":"addons.json"}' > dist/package.json
+            - run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')-1/") > dist/package.json
             # Get addons
             - run: |
                   jq -c 'map(select(startswith("//") | not) | {addonId: ., manifest: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json

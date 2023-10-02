@@ -1,0 +1,22 @@
+{
+	"name": "@sa-community/addons-data",
+	"version": "VERSION",
+	"description": "Scratch Addons’ addons data",
+	"homepage": "https://github.com/scratchaddons-community",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/scratchaddons-community/addons-data-script"
+	},
+	"license": "GPLv3",
+	"maintainers": [
+		"RedGuy12"
+	],
+	"main": "addons.json",
+	"types": "types.d.ts",
+	"files": [
+		"package.json",
+		"addons.json",
+		"LICENSE",
+		"types.d.ts"
+	]
+}
