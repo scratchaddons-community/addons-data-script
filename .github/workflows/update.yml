@@ -41,7 +41,7 @@ jobs:
               run: |
                   if [[ "v$(npm view @sa-community/addons-data version)" == "$VERSION"* ]]; then
                       echo "No new version"
-                      echo "stop_workflow=true" >> "$GITHUB_OUTPUT"
+                      echo "stop_workflow=false" >> "$GITHUB_OUTPUT"
                   else
                       echo "New version found"
                       echo "stop_workflow=false" >> "$GITHUB_OUTPUT"
@@ -56,7 +56,7 @@ jobs:
             - if: steps.check_version.outputs.stop_workflow == 'false'
               run: cp manifest.json dist/manifest.json
             - if: steps.check_version.outputs.stop_workflow == 'false'
-              run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')/") > dist/package.json
+              run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')-1/") > dist/package.json
             # Get addons
             - if: steps.check_version.outputs.stop_workflow == 'false'
               run: |
