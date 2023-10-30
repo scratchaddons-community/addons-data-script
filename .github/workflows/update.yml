@@ -26,6 +26,7 @@ jobs:
                       addons/*/addon.json
                       addons/addons.json
                       LICENSE
+                      manifest.json
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
                   fetch-depth: 0
