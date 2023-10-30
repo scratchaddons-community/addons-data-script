@@ -4,8 +4,7 @@
 	"description": "Scratch Addons’ addons data",
 	"homepage": "https://github.com/scratchaddons-community",
 	"repository": {
-		"type": "git",
-		"url": "https://github.com/scratchaddons-community/addons-data-script"
+		"url": "git+https://github.com/scratchaddons-community/addons-data-script.git"
 	},
 	"license": "GPLv3",
 	"maintainers": [
@@ -19,5 +18,6 @@
 		"manifest.json",
 		"LICENSE",
 		"types.d.ts"
-	]
+	],
+	"scripts": {}
 }
