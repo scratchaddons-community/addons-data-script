@@ -36,22 +36,33 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                   registry-url: "https://registry.npmjs.org"
-            - run: |
+            - id: check_version
+              run: |
                   if [ $VERSION == "v$(npm view @sa-community/addons-data version)" ]; then
                       echo "No new version"
-                      exit 0
+                      echo "stop_workflow=true" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "New version found"
+                      echo "stop_workflow=false" >> "$GITHUB_OUTPUT"
                   fi
             # Setup directory
             - uses: actions/checkout@v4.1.0
+              if: steps.check_version.outputs.stop_workflow == 'false'
               with:
                   path: dist
-            - run: cp LICENSE dist/LICENSE
-            - run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')/") > dist/package.json
+            - if: steps.check_version.outputs.stop_workflow == 'false'
+              run: cp LICENSE dist/LICENSE
+            - if: steps.check_version.outputs.stop_workflow == 'false'
+              run: cp manifest.json dist/manifest.json
+            - if: steps.check_version.outputs.stop_workflow == 'false'
+              run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')/") > dist/package.json
             # Get addons
-            - run: |
+            - if: steps.check_version.outputs.stop_workflow == 'false'
+              run: |
                   jq -c 'map(select(startswith("//") | not) | {addonId: ., manifest: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
             # Publish
-            - run: npm publish --provenance --access public
+            - if: steps.check_version.outputs.stop_workflow == 'false'
+              run: npm publish --provenance --access public
               working-directory: dist
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
