@@ -39,7 +39,7 @@ jobs:
                   registry-url: "https://registry.npmjs.org"
             - id: check_version
               run: |
-                  if [ $VERSION == "v$(npm view @sa-community/addons-data version)-0" ]; then
+                  if [[ "v$(npm view @sa-community/addons-data version)" == "$VERSION"* ]]; then
                       echo "No new version"
                       echo "stop_workflow=true" >> "$GITHUB_OUTPUT"
                   else
@@ -56,7 +56,7 @@ jobs:
             - if: steps.check_version.outputs.stop_workflow == 'false'
               run: cp manifest.json dist/manifest.json
             - if: steps.check_version.outputs.stop_workflow == 'false'
-              run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')-0/") > dist/package.json
+              run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')/") > dist/package.json
             # Get addons
             - if: steps.check_version.outputs.stop_workflow == 'false'
               run: |
