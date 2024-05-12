@@ -18,8 +18,8 @@ jobs:
         runs-on: ubuntu-20.04
 
         steps:
-            # Clone
-            - uses: actions/checkout@v4.1.0
+            - name: Clone
+              uses: actions/checkout@v4.1.5
               with:
                   repository: ScratchAddons/ScratchAddons
                   sparse-checkout: |
@@ -30,14 +30,20 @@ jobs:
                   sparse-checkout-cone-mode: false
                   fetch-tags: true
                   fetch-depth: 0
-            # Checkout
-            - run: echo "VERSION=${{ inputs.Version || '$(git describe --tags $(git rev-list --tags --max-count=1))' }}" >> "$GITHUB_ENV"
-            - run: git checkout "$VERSION"
-            # Check version
-            - uses: actions/setup-node@v3
+
+            - name: Get version
+              run: echo "VERSION=${{ inputs.Version || '$(git describe --tags $(git rev-list --tags --max-count=1))' }}" >> "$GITHUB_ENV"
+            - name: Checkout
+              run: git checkout "$VERSION"
+
+            - name: Setup Node.JS
+              uses: actions/setup-node@v4.0.2
               with:
+                  node-version: 20.6.0
+                  cache: npm
                   registry-url: "https://registry.npmjs.org"
-            - id: check_version
+            - name: Check version
+              id: check_version
               run: |
                   if [[ "v$(npm view @sa-community/addons-data version)" == "$VERSION"* ]]; then
                       echo "No new version"
@@ -46,23 +52,25 @@ jobs:
                       echo "New version found"
                       echo "stop_workflow=false" >> "$GITHUB_OUTPUT"
                   fi
+
             # Setup directory
-            - uses: actions/checkout@v4.1.0
+            - name: Checkout
+              uses: actions/checkout@v4.1.5
               if: steps.check_version.outputs.stop_workflow == 'false'
               with:
                   path: dist
             - if: steps.check_version.outputs.stop_workflow == 'false'
-              run: cp LICENSE dist/LICENSE
-            - if: steps.check_version.outputs.stop_workflow == 'false'
               run: cp manifest.json dist/manifest.json
             - if: steps.check_version.outputs.stop_workflow == 'false'
               run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')/") > dist/package.json
-            # Get addons
-            - if: steps.check_version.outputs.stop_workflow == 'false'
+
+            - name: Get addons
+              if: steps.check_version.outputs.stop_workflow == 'false'
               run: |
                   jq -c 'map(select(startswith("//") | not) | {addonId: ., manifest: (try input catch null)})' addons/addons.json $(jq -r 'map(select(startswith("//") | not) | "addons/" + . + "/addon.json") | join(" ")' addons/addons.json) >> dist/addons.json
-            # Publish
-            - if: steps.check_version.outputs.stop_workflow == 'false'
+
+            - name: Publish
+              if: steps.check_version.outputs.stop_workflow == 'false'
               run: npm publish --provenance --access public
               working-directory: dist
               env:
