@@ -19,7 +19,7 @@ jobs:
 
         steps:
             - name: Clone
-              uses: actions/checkout@v4.1.6
+              uses: actions/checkout@v4.1.7
               with:
                   repository: ScratchAddons/ScratchAddons
                   sparse-checkout: |
@@ -54,7 +54,7 @@ jobs:
 
             # Setup directory
             - name: Checkout
-              uses: actions/checkout@v4.1.6
+              uses: actions/checkout@v4.1.7
               if: steps.check_version.outputs.stop_workflow == 'false'
               with:
                   path: dist
