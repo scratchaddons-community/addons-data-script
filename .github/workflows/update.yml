@@ -37,7 +37,7 @@ jobs:
               run: git checkout "$VERSION"
 
             - name: Setup Node.JS
-              uses: actions/setup-node@v4.0.2
+              uses: actions/setup-node@v4.0.3
               with:
                   node-version: 20.6.0
                   registry-url: "https://registry.npmjs.org"
