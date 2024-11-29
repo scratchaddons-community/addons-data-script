@@ -27,7 +27,7 @@ jobs:
               run: npm install
 
             - name: Format
-              run: node --run format
+              run: npm run format
 
             - name: Assert clean
               if: startsWith(github.ref_name, 'dependabot/') == true
