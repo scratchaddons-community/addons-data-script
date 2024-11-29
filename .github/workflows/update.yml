@@ -32,7 +32,9 @@ jobs:
                   fetch-depth: 0
 
             - name: Get version
-              run: echo "VERSION=${{ inputs.Version || '$(git describe --tags $(git rev-list --tags --max-count=1))' }}" >> "$GITHUB_ENV"
+              run:
+                  echo "VERSION=${{ inputs.Version || '$(git describe --tags $(git rev-list --tags
+                  --max-count=1))' }}" >> "$GITHUB_ENV"
             - name: Checkout
               run: git checkout "$VERSION"
 
@@ -61,7 +63,9 @@ jobs:
             - if: steps.check_version.outputs.stop_workflow == 'false'
               run: cp manifest.json dist/manifest.json
             - if: steps.check_version.outputs.stop_workflow == 'false'
-              run: echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')/") > dist/package.json
+              run:
+                  echo $(cat dist/package.json | sed "s/VERSION/$(echo $VERSION | sed 's/v//')/") >
+                  dist/package.json
 
             - name: Get addons
               if: steps.check_version.outputs.stop_workflow == 'false'

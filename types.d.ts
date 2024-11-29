@@ -95,17 +95,18 @@ declare module "@sa-community/addons-data" {
 	/**
 	 * `"*"`: A match rule for any URL on Scratch origin. The script will execute will execute in all pages.
 	 *
-	 * `/^\^/`: A RegEx match rule. Patterns starting with https will be treated as an absolute RegEx pattern, and patterns that don’t start
-	 * will be treated as an relative RegEx pattern.
+	 * `/^\^/`: A RegEx match rule. Patterns starting with https will be treated as an absolute RegEx pattern, and
+	 * patterns that don’t start will be treated as an relative RegEx pattern.
 	 *
 	 * `[…]`: An array that contains match rules. The script will execute if it matches any of the rules.
 	 *
-	 * - `/^\^/`: A RegEx match rule. Patterns starting with https will be treated as an absolute RegEx pattern, and patterns that don’t start
-	 *   will be treated as an relative RegEx pattern.
-	 * - `"projects"`, `"projectEmbeds"`, `"studios"`, `"studioComments"`, `"profiles"`, `"topics"`, `"newPostScreens"`, `"editingScreens"`,
-	 *   `"forums"`, `"scratchWWWNoProject"`: A match rule shortcut.
+	 * - `/^\^/`: A RegEx match rule. Patterns starting with https will be treated as an absolute RegEx pattern, and
+	 *   patterns that don’t start will be treated as an relative RegEx pattern.
+	 * - `"projects"`, `"projectEmbeds"`, `"studios"`, `"studioComments"`, `"profiles"`, `"topics"`, `"newPostScreens"`,
+	 *   `"editingScreens"`, `"forums"`, `"scratchWWWNoProject"`: A match rule shortcut.
 	 * - `"isNotScratchWWW"`: A match rule shortcut matcher.
-	 * - `/^https://…/`: A URL match rule. TODO: Clarify this. This seemed only for absolute patterns. Is the relative is on the top?
+	 * - `/^https://…/`: A URL match rule. TODO: Clarify this. This seemed only for absolute patterns. Is the relative is
+	 *   on the top?
 	 */
 	export type matches =
 		| "*"
@@ -133,10 +134,7 @@ declare module "@sa-community/addons-data" {
 		addonEnabled: string | string[];
 	};
 	export type serializedTableNestableSetting = boolean | number | string;
-	export type serializedTableNestableSettings = Record<
-		string,
-		serializedTableNestableSetting
-	>;
+	export type serializedTableNestableSettings = Record<string, serializedTableNestableSetting>;
 	export type tableNestableSettings = {
 		/** The name of the setting. */
 		name: string;
@@ -264,7 +262,8 @@ declare module "@sa-community/addons-data" {
 		 *
 		 * Unlike persistent scripts, this is an array of objects, not strings.
 		 *
-		 * Each object must specify the url to the userscript through the "url" property, and provide an array of URL matches.
+		 * Each object must specify the url to the userscript through the "url" property, and provide an array of URL
+		 * matches.
 		 */
 		userscripts?: {
 			/** The path to the userscript. */
@@ -277,7 +276,8 @@ declare module "@sa-community/addons-data" {
 		/**
 		 * Similarly to {@link AddonManifest.userscripts userscripts}, you can specify a "userstyles" array.
 		 *
-		 * Each object must specify the url to the stylesheet through the "url" property, and provide an array of URL matches.
+		 * Each object must specify the url to the stylesheet through the "url" property, and provide an array of URL
+		 * matches.
 		 */
 		userstyles?: {
 			/** The path to the userstyle. */
@@ -286,8 +286,8 @@ declare module "@sa-community/addons-data" {
 			if?: _if;
 		}[];
 		/**
-		 * The "settings" object allow the addon’s users to specify settings in Scratch Addons’ settings panel. Inside your persistent scripts
-		 * and userscripts, you can then access those settings with the "addon.settings" API.
+		 * The "settings" object allow the addon’s users to specify settings in Scratch Addons’ settings panel. Inside
+		 * your persistent scripts and userscripts, you can then access those settings with the "addon.settings" API.
 		 *
 		 * Specify an "settings" property and provide an array of setting objects.
 		 *
@@ -339,7 +339,8 @@ declare module "@sa-community/addons-data" {
 		/**
 		 * You can provide the "enabledByDefault" property and set it to true. Its default value is false.
 		 *
-		 * Keep in mind, few addons will be enabled by default. If you want your addon to be enabled by default, please open a discussion issue.
+		 * Keep in mind, few addons will be enabled by default. If you want your addon to be enabled by default, please
+		 * open a discussion issue.
 		 */
 		enabledByDefault?: boolean;
 		/** An array containing presets for settings. */
@@ -357,8 +358,7 @@ declare module "@sa-community/addons-data" {
 			 */
 			values: Record<
 				string,
-				| serializedTableNestableSetting
-				| serializedTableNestableSettings[]
+				serializedTableNestableSetting | serializedTableNestableSettings[]
 			>;
 		}[];
 		/**
