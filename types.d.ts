@@ -1,5 +1,5 @@
 declare module "@sa-community/addons-data" {
-	/** @author [ScratchAddons/manifest-schema](https://github.com/ScratchAddons/manifest-schema/blob/4ef85c5/1/1.20.json) */
+	/** @author [ScratchAddons/manifest-schema](https://github.com/ScratchAddons/manifest-schema/blob/132b0d7/1/1.21.json) */
 
 	/** The value manipulator. */
 	export type cssManipulator =
