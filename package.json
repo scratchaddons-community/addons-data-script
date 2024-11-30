@@ -24,7 +24,7 @@
 	},
 	"prettier": "@redguy12/prettier-config",
 	"devDependencies": {
-		"@redguy12/prettier-config": "3.1.1",
-		"prettier": "3.3.3"
+		"@redguy12/prettier-config": "3.2.1",
+		"prettier": "3.4.1"
 	}
 }
