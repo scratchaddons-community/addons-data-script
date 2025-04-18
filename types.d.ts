@@ -129,10 +129,7 @@ declare module "@sa-community/addons-data" {
 				| `https://${string}`
 		  )[];
 
-	export type _if = {
-		settings: Record<string, unknown>;
-		addonEnabled: string | string[];
-	};
+	export type _if = { settings: Record<string, unknown>; addonEnabled: string | string[] };
 	export type serializedTableNestableSetting = boolean | number | string;
 	export type serializedTableNestableSettings = Record<string, serializedTableNestableSetting>;
 	export type tableNestableSettings = {
@@ -311,10 +308,7 @@ declare module "@sa-community/addons-data" {
 					 *
 					 * The table preset.
 					 */
-					presets?: {
-						name: string;
-						value: serializedTableNestableSettings;
-					}[];
+					presets?: { name: string; value: serializedTableNestableSettings }[];
 			  }
 		)[];
 		/**
